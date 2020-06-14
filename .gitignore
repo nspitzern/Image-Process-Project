@@ -1,0 +1,7 @@
+# ignore all images
+*.jpg
+
+# ignore all jet brains files
+.idea
+out
+Image Process.iml
