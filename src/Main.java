@@ -4,12 +4,21 @@ import ImageProcess.Image;
 public class Main {
     public static void main(String[] args) {
 
-        Image img = new Image("panda.jpg");
+//        Image img2 = new Image("src/images/ron.png");
+//        Image img1 = new Image("src/images/dumbledore.png");
+//
+//        ImageProcess ip = new ImageProcess();
+//
+//        Image newImg = ip.hybrid(img1, img2);
+//
+//        newImg.save("src/images/hybrid.jpg");
 
-        ImageProcess ip = new ImageProcess(img);
+        Image img = new Image("src/images/panda.jpg");
 
-        Image newImg = ip.sharpen();
+        ImageProcess ip = new ImageProcess();
 
-        newImg.save("sharp.jpg");
+        Image newImg = ip.squareFocus(img);
+
+        newImg.save("src/images/focusSquare.jpg");
     }
 }

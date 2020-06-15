@@ -40,7 +40,7 @@ public class Image {
     }
 
     public Image(String path) {
-        load(path);
+        loadImg(path);
     }
 
     public int getWidth() {
@@ -71,19 +71,19 @@ public class Image {
         return this.arr[row][col][2];
     }
 
-    public void setRed(int row, int col, int v) {
+    public void setRed(int row, int col, double v) {
         this.arr[row][col][0] = v;
     }
 
-    public void setGreen(int row, int col, int v) {
+    public void setGreen(int row, int col, double v) {
         this.arr[row][col][1] = v;
     }
 
-    public void setBlue(int row, int col, int v) {
+    public void setBlue(int row, int col, double v) {
         this.arr[row][col][2] = v;
     }
 
-    public void setPixel(int row, int col, int v) {
+    public void setPixel(int row, int col, double v) {
         setRed(row, col, v);
         setGreen(row, col, v);
         setBlue(row, col, v);
@@ -111,7 +111,7 @@ public class Image {
         }
     }
 
-    public boolean load(String path) {
+    public boolean loadImg(String path) {
         BufferedImage img  = null;
         try {
             File f = new File(path);
@@ -189,6 +189,63 @@ public class Image {
                 multRed(row, col, v);
                 multBlue(row, col, v);
                 multGreen(row, col, v);
+            }
+        }
+    }
+
+    public void addImg(Image otherImg) {
+        try {
+            if (otherImg.width != this.width || otherImg.height != this.height) {
+                throw new Exception("Dimensions of images don't match!");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+
+        for (int row = 0; row < this.height; row++) {
+            for (int col = 0; col < this.width; col++) {
+                    addRed(row, col, otherImg.getRed(row, col));
+                    addGreen(row, col, otherImg.getGreen(row, col));
+                    addBlue(row, col, otherImg.getBlue(row, col));
+            }
+        }
+    }
+
+    public void subImg(Image otherImg) {
+        try {
+            if (otherImg.width != this.width || otherImg.height != this.height) {
+                throw new Exception("Dimensions of images don't match!");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+
+        for (int row = 0; row < this.height; row++) {
+            for (int col = 0; col < this.width; col++) {
+                addRed(row, col, -otherImg.getRed(row, col));
+                addGreen(row, col, -otherImg.getGreen(row, col));
+                addBlue(row, col, -otherImg.getBlue(row, col));
+            }
+        }
+    }
+
+    public void multImg(Image otherImg) {
+        try {
+            if (otherImg.width != this.width || otherImg.height != this.height) {
+                throw new Exception("Dimensions of images don't match!");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+
+        for (int row = 0; row < this.height; row++) {
+            for (int col = 0; col < this.width; col++) {
+                multRed(row, col, otherImg.getRed(row, col));
+                multGreen(row, col, otherImg.getGreen(row, col));
+                multBlue(row, col, otherImg.getBlue(row, col));
             }
         }
     }

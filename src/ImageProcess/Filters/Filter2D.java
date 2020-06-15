@@ -1,6 +1,6 @@
-package ImageProcess;
+package ImageProcess.Filters;
 
-public class Filter2D {
+public class Filter2D implements Filter {
     private double[][] f;
     private int width, height;
 
@@ -8,7 +8,6 @@ public class Filter2D {
         this.width = width;
         this.height = height;
         this.f = new double[height][width];
-        initFilterOnes();
     }
 
     public Filter2D(double[][] arr) {
@@ -17,12 +16,31 @@ public class Filter2D {
         this.f = arr;
     }
 
-    public void multByValue(double v) {
+    public void multAllByValue(double v) {
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                f[i][j] *= v;
+                this.f[i][j] *= v;
             }
         }
+    }
+
+    @Override
+    public void addAllValue(double v) {
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                this.f[i][j] += v;
+            }
+        }
+    }
+
+    @Override
+    public void multByValue(int row, int col, double v) {
+        this.f[row][col] *= v;
+    }
+
+    @Override
+    public void addValue(int row, int col, double v) {
+        this.f[row][col] += v;
     }
 
     public double getValue(int row, int col) {
@@ -37,18 +55,10 @@ public class Filter2D {
         return this.height;
     }
 
-    private void initFilterOnes() {
+    public void initFilterOnes() {
         for (int i = 0; i < this.height; i++) {
             for (int j = 0; j < this.width; j++) {
                 this.f[j][i] = 1;
-            }
-        }
-    }
-
-    private void initFilterZeros() {
-        for (int i = 0; i < this.height; i++) {
-            for (int j = 0; j < this.width; j++) {
-                this.f[j][i] = 0;
             }
         }
     }

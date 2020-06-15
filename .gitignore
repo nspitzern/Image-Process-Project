@@ -1,5 +1,6 @@
 # ignore all images
 *.jpg
+*.png
 
 # ignore all jet brains files
 .idea

@@ -1,6 +1,7 @@
 package ImageProcess;
 
-import java.awt.image.BufferedImage;
+import ImageProcess.Filters.Filter;
+import ImageProcess.Filters.Filter2D;
 
 class ImageProcessMath {
 //    static BufferedImage conv2D(BufferedImage img, Filter2D filter) {
@@ -49,7 +50,7 @@ class ImageProcessMath {
 //        return newImg;
 //    }
 
-    static Image conv2D(Image img, Filter2D filter) {
+    static Image conv2D(Image img, Filter filter) {
         int imgWidth, imgHeight, filterWidth, filterHeight;
         imgWidth = img.getWidth();
         imgHeight = img.getHeight();

@@ -1,23 +1,16 @@
 package ImageProcess;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
+import ImageProcess.Filters.*;
 
 public class ImageProcess {
-    private BufferedImage img;
+//    private Image img;
+//
+//    public ImageProcess(Image img) {
+//        this.img = img;
+//    }
 
-    private Image imgI;
-
-    public ImageProcess(BufferedImage img) {
-        this.img = img;
-    }
-
-    public ImageProcess(Image img) {
-        this.imgI = img;
-    }
-
-    public Image negative() {
-        Image newImg = this.imgI.copy();
+    public Image negative(Image img) {
+        Image newImg = img.copy();
         for (int row = 0; row < newImg.getHeight(); row++) {
             for (int col = 0; col < newImg.getWidth(); col++) {
                 newImg.setRed(row, col, 255 - (int)newImg.getRed(row, col));
@@ -28,27 +21,32 @@ public class ImageProcess {
         return newImg;
     }
 
-    public Image brightness(double v) {
-        Image newImg = this.imgI.copy();
+    public Image brightness(Image img, double v) {
+        Image newImg = img.copy();
         newImg.addAll(v);
         return newImg;
     }
 
-    public Image multByValue(double v) {
-        Image newImg = this.imgI.copy();
+    public Image multByValue(Image img, double v) {
+        Image newImg = img.copy();
         newImg.multAll(v);
         return newImg;
     }
 
-    public Image blurImage(int filterWidth, int filterHeight) {
-        Filter2D f = new Filter2D(filterWidth, filterHeight);
-        f.multByValue((double)1 / (filterWidth * filterHeight));
+    public Image blurImage(Image img, int filterWidth, int filterHeight) {
+        Filter f = new BlurFilter(filterWidth, filterHeight);
 
-        return ImageProcessMath.conv2D(this.imgI, f);
+        return ImageProcessMath.conv2D(img, f);
     }
 
-    public Image RGB2GreyScale() {
-        Image newImg = this.imgI.copy();
+    public Image gaussianBlur(Image img, double sigma) {
+        Filter f = new GaussianFilter(sigma);
+
+        return ImageProcessMath.conv2D(img, f);
+    }
+
+    public Image RGB2GreyScale(Image img) {
+        Image newImg = img.copy();
 
         int width, height;
         width = newImg.getWidth();
@@ -66,12 +64,51 @@ public class ImageProcess {
         return newImg;
     }
 
-    public Image sharpen() {
-        double[][] arr = {{0, -1, 0}, {-1, 5 ,-1}, {0, -1, 0}};
-        Filter2D f = new Filter2D(arr);
+    public Image sharpen(Image img) {
+        Filter f = new SharpFilter();
 
-        Image newImg = ImageProcessMath.conv2D(this.imgI, f);
+        Image newImg = ImageProcessMath.conv2D(img, f);
         newImg.limitImageColors();
+
+        return newImg;
+    }
+
+    public Image edgeDetection(Image img) {
+        Filter f = new EdgeDetectionFilter();
+
+        Image newImg = ImageProcessMath.conv2D(img, f);
+        newImg.limitImageColors();
+
+        return newImg;
+    }
+
+    public Image hybrid(Image src, Image other) {
+        Image lowFreqSrc = gaussianBlur(src, 2);
+        Image lowFreqOther = gaussianBlur(other, 2);
+        other.subImg(lowFreqOther);
+        lowFreqSrc.addImg(other);
+
+        return lowFreqSrc;
+    }
+
+    public Image squareFocus(Image img) {
+        Image newImg = img.copy();
+
+        Image filterImg = new Image(img.getWidth(), img.getHeight());
+
+        for (int row = 0; row < filterImg.getHeight(); row++) {
+            for (int col = 0; col < filterImg.getWidth(); col++) {
+                filterImg.setPixel(row, col, 0.5);
+            }
+        }
+
+        for (int row = filterImg.getHeight() / 4; row < 3 * (filterImg.getHeight() / 4); row++) {
+            for (int col = filterImg.getWidth() / 4; col < 3 * (filterImg.getWidth() / 4); col++) {
+                filterImg.setPixel(row, col, 2);
+            }
+        }
+
+        newImg.multImg(filterImg);
 
         return newImg;
     }
