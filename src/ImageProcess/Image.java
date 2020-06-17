@@ -71,6 +71,8 @@ public class Image {
         return this.arr[row][col][2];
     }
 
+    public double getPixel(int row, int col, int c) { return this.arr[row][col][c]; }
+
     public void setRed(int row, int col, double v) {
         this.arr[row][col][0] = v;
     }

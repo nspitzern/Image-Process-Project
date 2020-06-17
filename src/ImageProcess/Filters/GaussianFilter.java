@@ -3,8 +3,8 @@ package ImageProcess.Filters;
 public class GaussianFilter implements Filter {
     private Filter2D f;
 
-    public GaussianFilter(double sigma) {
-        int size = (int) sigma * 6;
+    public GaussianFilter(int size, double sigma) {
+        size = (size % 2 == 0) ? size + 1 : size;
         // make the filter size odd
         size = size + 1;
         double[][] arr = new double[size][size];

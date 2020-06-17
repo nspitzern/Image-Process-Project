@@ -17,8 +17,8 @@ public class Main {
 
         ImageProcess ip = new ImageProcess();
 
-        Image newImg = ip.squareFocus(img);
+        Image newImg = ip.nearestNeighbourResize(img, 400, 600);
 
-        newImg.save("src/images/focusSquare.jpg");
+        newImg.save("src/images/nearest_neighbour_resize_400x600.jpg");
     }
 }
