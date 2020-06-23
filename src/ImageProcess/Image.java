@@ -74,15 +74,15 @@ public class Image {
     public double getPixel(int row, int col, int c) { return this.arr[row][col][c]; }
 
     public void setRed(int row, int col, double v) {
-        this.arr[row][col][0] = v;
+        this.arr[row][col][0] = limitColor(v);
     }
 
     public void setGreen(int row, int col, double v) {
-        this.arr[row][col][1] = v;
+        this.arr[row][col][1] = limitColor(v);
     }
 
     public void setBlue(int row, int col, double v) {
-        this.arr[row][col][2] = v;
+        this.arr[row][col][2] = limitColor(v);
     }
 
     public void setPixel(int row, int col, double v) {

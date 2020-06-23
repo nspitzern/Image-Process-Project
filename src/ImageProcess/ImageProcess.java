@@ -183,4 +183,30 @@ public class ImageProcess {
 
         return resize;
     }
+
+    public Image sepia(Image img) {
+//        newRed = 0.393*R + 0.769*G + 0.189*B
+//        newGreen = 0.349*R + 0.686*G + 0.168*B
+//        newBlue = 0.272*R + 0.534*G + 0.131*B
+        Image newImg = img.copy();
+        double red, green ,blue;
+
+        for (int row = 0; row < img.getHeight(); row++) {
+            for (int col = 0; col < img.getWidth(); col++) {
+                red = img.getRed(row, col);
+                green = img.getGreen(row, col);
+                blue = img.getBlue(row, col);
+
+                double newRed = 0.393 * red + 0.769 * green + 0.189 * blue;
+                double newGreen = 0.349 * red + 0.686 * green + 0.168 * blue;
+                double newBlue = 0.272 * red + 0.534 * green + 0.131 * blue;
+
+                newImg.setRed(row, col, newRed);
+                newImg.setGreen(row, col, newGreen);
+                newImg.setBlue(row, col, newBlue);
+            }
+        }
+
+        return newImg;
+    }
 }
