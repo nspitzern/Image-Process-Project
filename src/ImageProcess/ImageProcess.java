@@ -3,11 +3,6 @@ package ImageProcess;
 import ImageProcess.Filters.*;
 
 public class ImageProcess {
-//    private Image img;
-//
-//    public ImageProcess(Image img) {
-//        this.img = img;
-//    }
 
     public Image negative(Image img) {
         Image newImg = img.copy();
@@ -126,7 +121,7 @@ public class ImageProcess {
         return new Image[]{gxImg, gyImg, edges};
     }
 
-    public Image[] prewittEdgeDetection(Image img) {
+    private Image[] prewittEdgeDetection(Image img) {
         PrewittFilter prewitt = new PrewittFilter();
         Image gxImg = ImageProcessMath.conv2D(img, prewitt.getGx());
         Image gyImg = ImageProcessMath.conv2D(img, prewitt.getGy());
@@ -261,6 +256,11 @@ public class ImageProcess {
         return resize;
     }
 
+    /*****
+     * Converts a colored image into a Sepia-colored image.
+     * @param img an image.
+     * @return a Sepia-colored image.
+     */
     public Image sepia(Image img) {
         // newRed = 0.393*R + 0.769*G + 0.189*B
         // newGreen = 0.349*R + 0.686*G + 0.168*B
@@ -390,4 +390,69 @@ public class ImageProcess {
         }
         return newImg;
     }
+
+    /*****
+     * Flips an image's red channel 90 degrees.
+     * @param img the original image.
+     * @param color specific channel. 0 - red, 1 - green, 2 - blue. By default we flip the red channel.
+     * @return a flipped image.
+     */
+    public Image flip90Color(Image img, int color) {
+        Image newImg = new Image(img.getHeight(), img.getWidth());
+
+        for (int row = 0; row < img.getHeight(); row++) {
+
+            for(int col = 0; col < img.getWidth() - 1; col++) {
+                double red = img.getRed(row, col);
+                double green = img.getGreen(row, col);
+                double blue = img.getBlue(row, col);
+
+                switch (color) {
+                    case 0:
+                        newImg.setRed(col, newImg.getWidth() - row - 1, red);
+                        break;
+                    case 1:
+                        newImg.setGreen(col, newImg.getWidth() - row - 1, green);
+                        break;
+                    case 2:
+                        newImg.setBlue(col, newImg.getWidth() - row - 1, blue);
+                        break;
+                    default:
+                        newImg.setRed(col, newImg.getWidth() - row - 1, red);
+                        break;
+                }
+            }
+        }
+        return newImg;
+    }
+
+    /*****
+     * Flips an image's red channel 90 degrees.
+     * @param img the original image.
+     * @return a flipped image.
+     */
+    public Image flip90(Image img) {
+        Image newImg = new Image(img.getHeight(), img.getWidth());
+
+        Image redImg = flip90Color(img, 0);
+        Image greenImg = flip90Color(img, 1);
+        Image blueImg = flip90Color(img, 2);
+
+        for (int row = 0; row < newImg.getHeight(); row++) {
+            for (int col = 0; col < newImg.getWidth(); col++) {
+                double red, green, blue;
+
+                red = redImg.getRed(row, col);
+                green = greenImg.getGreen(row, col);
+                blue = blueImg.getBlue(row, col);
+
+                newImg.setRed(row, col, red);
+                newImg.setGreen(row, col, green);
+                newImg.setBlue(row, col, blue);
+            }
+        }
+        return newImg;
+    }
+
+
 }
