@@ -17,8 +17,8 @@ public class Main {
 
         ImageProcess ip = new ImageProcess();
 
-        Image newImg = ip.sepia(img);
+        Image newImg = ip.flip180X(img);
 
-        newImg.save("src/images/sepia.jpg");
+        newImg.save("src/images/flip180.jpg");
     }
 }

@@ -62,4 +62,15 @@ public class Filter2D implements Filter {
             }
         }
     }
+
+    protected void setArr(double[][] arr) {
+        if (this.height != arr.length || this.width != arr[0].length) {
+            try {
+                throw new Exception("Error in filter dimensions");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        this.f = arr;
+    }
 }

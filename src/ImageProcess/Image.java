@@ -44,11 +44,15 @@ public class Image {
     }
 
     public int getWidth() {
-        return width;
+        return this.width;
     }
 
     public int getHeight() {
-        return height;
+        return this.height;
+    }
+
+    public int getChannel() {
+        return this.chan;
     }
 
     public void setWidth(int width) {
@@ -274,5 +278,23 @@ public class Image {
                 }
             }
         }
+    }
+
+    public Image createRandomNoise(int width, int height) {
+        Image img = new Image(width, height);
+
+        double red, green, blue;
+        for (int row = 0; row < height; row++) {
+            for (int col = 0; col < width; col++) {
+                red = Math.random() * 256;
+                green = Math.random() * 256;
+                blue = Math.random() * 256;
+
+                img.setRed(row, col, red);
+                img.setGreen(row, col, green);
+                img.setBlue(row, col, blue);
+            }
+        }
+        return img;
     }
 }
