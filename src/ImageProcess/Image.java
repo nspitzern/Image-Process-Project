@@ -89,10 +89,8 @@ public class Image {
         this.arr[row][col][2] = limitColor(v);
     }
 
-    public void setPixel(int row, int col, double v) {
-        setRed(row, col, v);
-        setGreen(row, col, v);
-        setBlue(row, col, v);
+    public void setPixel(int row, int col, int chan, double v) {
+        this.arr[row][col][chan] = limitColor(v);
     }
 
     public void save(String path) {

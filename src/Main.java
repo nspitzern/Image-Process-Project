@@ -17,8 +17,9 @@ public class Main {
 
         ImageProcess ip = new ImageProcess();
 
-        Image newImg = ip.edgeDetection(img, "");
+//        Image newImg = ip.edgeDetection(img, "");
+        Image newImg = ip.cannyEdgeDetection(img);
 
-        newImg.save("src/images/edge.jpg");
+        newImg.save("src/images/canny.jpg");
     }
 }
