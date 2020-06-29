@@ -94,13 +94,23 @@ public class Image {
         this.arr[row][col][chan] = limitColor(v);
     }
 
-    public void save(String path) {
-        BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+    public void save(String path, int type) {
+        BufferedImage img = null;
+        if (type == 0) {
+            img = new BufferedImage(this.width, this.height, BufferedImage.TYPE_INT_RGB);
+        } else {
+            img = new BufferedImage(this.width, this.height, BufferedImage.TYPE_BYTE_GRAY);
+        }
 
         try {
             for (int row = 0; row < img.getHeight(); row++) {
                 for (int col = 0; col < img.getWidth(); col++) {
-                    Color c = new Color((int)this.arr[row][col][0], (int)this.arr[row][col][1], (int)this.arr[row][col][2]);
+                    Color c = null;
+                    if (this.chan == 1) {
+                        c = new Color((int)this.arr[row][col][0], (int)this.arr[row][col][0], (int)this.arr[row][col][0]);
+                    } else {
+                        c = new Color((int)this.arr[row][col][0], (int)this.arr[row][col][1], (int)this.arr[row][col][2]);
+                    }
                     img.setRGB(col, row, c.getRGB());
                 }
             }
@@ -304,7 +314,13 @@ public class Image {
         try {
             for (int row = 0; row < bi.getHeight(); row++) {
                 for (int col = 0; col < bi.getWidth(); col++) {
-                    Color c = new Color((int)this.arr[row][col][0], (int)this.arr[row][col][1], (int)this.arr[row][col][2]);
+                    Color c = null;
+                    if (this.chan == 1) {
+                        c = new Color((int)this.arr[row][col][0], (int)this.arr[row][col][0], (int)this.arr[row][col][0]);
+                    } else {
+                        c = new Color((int)this.arr[row][col][0], (int)this.arr[row][col][1], (int)this.arr[row][col][2]);
+                    }
+
                     bi.setRGB(col, row, c.getRGB());
                 }
             }

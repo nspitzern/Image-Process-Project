@@ -12,7 +12,7 @@ class ImageProcessMath {
         filterHeight = filter.getHeight();
         filterWidth = filter.getWidth();
 
-        Image newImg = img.copy();
+        Image newImg = new Image(img.getWidth(), img.getHeight(), img.getChannel());
 
         try {
             for (int imgRow = 0; imgRow < imgHeight; imgRow++) {
@@ -25,8 +25,8 @@ class ImageProcessMath {
                         for (int fCol = 0; fCol < filterWidth; fCol++) {
                             // Calculate filter value, and image x,y indices
                             double fval = filter.getValue(fRow, fCol);
-                            int imgX = imgCol + fCol - filterWidth / 2;
-                            int imgY = imgRow + fRow - filterHeight / 2;
+                            int imgX = imgCol + fCol;
+                            int imgY = imgRow + fRow;
 
                             // if the index is outside of the original image - go to the next iteration
                             if (imgX < 0 || imgY < 0 || imgX >= imgWidth || imgY >= imgHeight) {
