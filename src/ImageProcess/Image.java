@@ -1,6 +1,7 @@
 package ImageProcess;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -294,5 +295,27 @@ public class Image {
             }
         }
         return img;
+    }
+
+    public void show() {
+
+        BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+
+        try {
+            for (int row = 0; row < bi.getHeight(); row++) {
+                for (int col = 0; col < bi.getWidth(); col++) {
+                    Color c = new Color((int)this.arr[row][col][0], (int)this.arr[row][col][1], (int)this.arr[row][col][2]);
+                    bi.setRGB(col, row, c.getRGB());
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        JFrame frame = new JFrame();
+        frame.getContentPane().setLayout(new FlowLayout());
+        frame.getContentPane().add(new JLabel(new ImageIcon(bi)));
+        frame.pack();
+        frame.setVisible(true);
     }
 }
