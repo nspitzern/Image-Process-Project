@@ -569,4 +569,14 @@ public class ImageProcess {
         return newImg;
     }
 
+    public FFT FFT(Image img) {
+        FFT fft = new FFT(img);
+        fft.forward();
+        return fft;
+    }
+
+    public Image inverseFFT(FFT fft) {
+        fft.inverse();
+        return fft.getImage();
+    }
 }

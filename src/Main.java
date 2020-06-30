@@ -1,5 +1,6 @@
 import ImageProcess.ImageProcess;
 import ImageProcess.Image;
+import ImageProcess.FFT;
 
 public class Main {
     public static void main(String[] args) {
@@ -13,12 +14,15 @@ public class Main {
 //
 //        newImg.save("src/images/hybrid.jpg");
 
-        Image img = new Image("src/images/panda.jpg");
+        Image img = new Image("src/images/resize.jpg");
 
         ImageProcess ip = new ImageProcess();
 
 //        Image newImg = ip.edgeDetection(img, "");
-        Image newImg = ip.cannyEdgeDetection(img, 80, 40);
-        newImg.save("src/images/canny.jpg", 0);
+        FFT fft = ip.FFT(img);
+        fft.getFrequenciesImage().save("src/images/FFT.jpg", 0);
+
+        Image newImg = ip.inverseFFT(fft);
+        newImg.save("src/images/iFFT.jpg", 0);
     }
 }

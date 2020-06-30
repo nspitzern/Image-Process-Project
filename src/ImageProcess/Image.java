@@ -40,6 +40,36 @@ public class Image {
         }
     }
 
+    public Image(double[][] arr) {
+        this.height = arr.length;
+        this.width = arr[0].length;
+        this.chan = 3;
+        this.arr = new double[this.height][this.width][this.chan];
+
+        for (int row = 0; row < arr.length; row++) {
+            for (int col = 0; col < arr[0].length; col++) {
+                setRed(row, col, arr[row][col]);
+                setGreen(row, col, arr[row][col]);
+                setBlue(row, col, arr[row][col]);
+            }
+        }
+    }
+
+    public Image(double[][][] arr) {
+        this.height = arr.length;
+        this.width = arr[0].length;
+        this.chan = arr[0][0].length;
+        this.arr = new double[this.height][this.width][this.chan];
+
+        for (int row = 0; row < arr.length; row++) {
+            for (int col = 0; col < arr[0].length; col++) {
+                for (int chan = 0; chan < arr[0][0].length; chan++) {
+                    setPixel(row, col, chan, arr[row][col][chan]);
+                }
+            }
+        }
+    }
+
     public Image(String path) {
         loadImg(path);
     }
