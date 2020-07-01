@@ -14,15 +14,12 @@ public class Main {
 //
 //        newImg.save("src/images/hybrid.jpg");
 
-        Image img = new Image("src/images/resize.jpg");
+        Image img = new Image("src/images/panda03.jpg");
 
         ImageProcess ip = new ImageProcess();
 
-//        Image newImg = ip.edgeDetection(img, "");
-        FFT fft = ip.FFT(img);
-        fft.getFrequenciesImage().save("src/images/FFT.jpg", 0);
+        Image newImg = ip.histogramEqualization(img);
 
-        Image newImg = ip.inverseFFT(fft);
-        newImg.save("src/images/iFFT.jpg", 0);
+        newImg.save("src/images/histogramEq.jpg", 0);
     }
 }

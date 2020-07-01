@@ -12,6 +12,18 @@ public class Histogram {
         initUniformHist();
     }
 
+    public Histogram(Histogram hist) {
+        this.red = new double[255];
+        this.green = new double[255];
+        this.blue = new double[255];
+
+        for (int i = 0; i < 255; i++) {
+            this.red[i] = hist.getRed(i);
+            this.green[i] = hist.getGreen(i);
+            this.blue[i] = hist.getBlue(i);
+        }
+    }
+
     public Histogram(Image img) {
         this.red = new double[255];
         this.green = new double[255];
@@ -100,5 +112,21 @@ public class Histogram {
             arr[i] = nonNeg(arr[i]);
         }
         return arr;
+    }
+
+    public void normalizeHist(double val) {
+        for (int i = 0; i < 255; i++) {
+            this.red[i] /= val;
+            this.green[i] /= val;
+            this.blue[i] /= val;
+        }
+    }
+
+    public void normalizeHist() {
+        for (int i = 0; i < 255; i++) {
+            this.red[i] /= 255;
+            this.green[i] /= 255;
+            this.blue[i] /= 255;
+        }
     }
 }

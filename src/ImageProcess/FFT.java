@@ -7,7 +7,7 @@ public class FFT {
     private double[][] amps;
     private double[][] dataOut;
 
-    public FFT(Image img) {
+    FFT(Image img) {
         this.img = img;
         this.real = new double[img.getHeight()][img.getWidth()];
         this.imagine = new double[img.getHeight()][img.getWidth()];
@@ -51,7 +51,6 @@ public class FFT {
 
     void inverse() {
         int width = this.img.getWidth(), height = this.img.getHeight();
-
 
         for (int imgRow = 0; imgRow < height; imgRow++) {
             for (int imgCol = 0; imgCol < width; imgCol++) {
