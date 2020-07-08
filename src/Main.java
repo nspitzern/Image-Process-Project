@@ -14,12 +14,12 @@ public class Main {
 //
 //        newImg.save("src/images/hybrid.jpg");
 
-        Image img = new Image("src/images/building.jpg");
+        Image img = new Image("src/images/panda.jpg");
 
         ImageProcess ip = new ImageProcess();
 
-        Image newImg = ip.cannyEdgeDetection(img, 0.5, 0.3);
+        Image newImg = ip.RGB2GreyScale(img);
 
-//        newImg.save("src/images/canny.jpg", 0);
+        newImg.save("src/images/grey.jpg");
     }
 }

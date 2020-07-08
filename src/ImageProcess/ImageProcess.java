@@ -58,7 +58,6 @@ public class ImageProcess {
         for (int row = 0; row < height; row++) {
             for (int col = 0; col < width; col++) {
                 for (int chan = 0; chan < channel; chan++) {
-//                    double grey = (0.2126f * newImg.getRed(row, col) + 0.7152f * newImg.getGreen(row, col) + 0.0722f * newImg.getBlue(row, col));
                     double grey = (0.299f * img.getRed(row, col) + 0.587f * img.getGreen(row, col) + 0.114f * img.getBlue(row, col));
 
                     newImg.setPixel(row, col, chan, grey);
@@ -192,7 +191,6 @@ public class ImageProcess {
         nonMaximumSuppression(magnitudes, angles);
 
         Image edges = applyThresholds(magnitudes, highThreshold, lowThreshold);
-        edges.show();
 
         return edges;
     }
