@@ -669,6 +669,15 @@ public class ImageProcess {
         return img;
     }
 
+    /****
+     * Enhance the image according to a logarithmic/linear/exponential function.
+     * The type of the function depends on the power (power of 1 is linear, 0 < power < 1 is logarithmic,
+     * and 1 < power is exponential).
+     * @param img the image
+     * @param power the power of the function
+     * @param constant a constant
+     * @return an enhanced image
+     */
     public Image imageEnhancement(Image img, double power, double constant) {
         Image newImg = img.copy();
 
@@ -686,5 +695,29 @@ public class ImageProcess {
             }
         }
         return newImg;
+    }
+
+    public Image LUT(Image img, double brightnessParam, double constant) {
+        Image newImg = new Image(img.getWidth(), img.getHeight(), img.getChannel());
+        for (int chan = 0; chan < img.getChannel(); chan++) {
+            double fMean = 0;
+
+            // calculate the mean of the image in the current channel
+            for (int row = 0; row < img.getHeight(); row++) {
+                for (int col = 0; col < img.getWidth(); col++) {
+                    fMean += img.getPixel(row, col, chan);
+                }
+            }
+
+            fMean /= (img.getHeight() * img.getWidth());
+
+            for (int row = 0; row < img.getHeight(); row++) {
+                for (int col = 0; col < img.getWidth(); col++) {
+                    double newVal = ((img.getPixel(row, col, chan) - fMean + brightnessParam) / (1 - (constant / 100))) + fMean;
+                    newImg.setPixel(row, col, chan, newVal);
+                }
+            }
+        }
+    return  newImg;
     }
 }

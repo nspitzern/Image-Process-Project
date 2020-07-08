@@ -14,12 +14,12 @@ public class Main {
 //
 //        newImg.save("src/images/hybrid.jpg");
 
-        Image img = new Image("src/images/panda.jpg");
+        Image img = new Image("src/images/panda03.jpg");
 
         ImageProcess ip = new ImageProcess();
 
-        Image newImg = ip.imageEnhancement(img, 5, 2);
+        Image newImg = ip.LUT(img, 0,  100);
 
-        newImg.save("src/images/enhancement5,2.jpg", 0);
+        newImg.save("src/images/LUT0,100.jpg", 0);
     }
 }
