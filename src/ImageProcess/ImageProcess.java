@@ -668,4 +668,23 @@ public class ImageProcess {
 
         return img;
     }
+
+    public Image imageEnhancement(Image img, double power, double constant) {
+        Image newImg = img.copy();
+
+        for (int row = 0; row < img.getHeight(); row++) {
+            for (int col = 0; col < img.getWidth(); col++) {
+                for (int chan = 0; chan < img.getChannel(); chan++) {
+                    double currPixel = img.getPixel(row, col, chan);
+
+                    currPixel /= 255;
+
+                    currPixel = constant * Math.pow(currPixel, power);
+
+                    newImg.setPixel(row, col, chan, currPixel * 255);
+                }
+            }
+        }
+        return newImg;
+    }
 }
