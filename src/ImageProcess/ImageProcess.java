@@ -48,17 +48,18 @@ public class ImageProcess {
     }
 
     public Image RGB2GreyScale(Image img) {
-        Image newImg = img.copy();
+        Image newImg = new Image(img.getWidth(), img.getHeight(), img.getChannel());
 
-        int width, height;
+        int width, height, channel;
         width = newImg.getWidth();
         height = newImg.getHeight();
+        channel = newImg.getChannel();
 
         for (int row = 0; row < height; row++) {
             for (int col = 0; col < width; col++) {
-                for (int chan = 0; chan < img.getChannel(); chan++) {
-//                    int grey = (int)(0.2126f * newImg.getRed(row, col) + 0.7152f * newImg.getGreen(row, col) + 0.0722f * newImg.getBlue(row, col));
-                    int grey = (int)(0.299f * newImg.getRed(row, col) + 0.587f * newImg.getGreen(row, col) + 0.114f * newImg.getBlue(row, col));
+                for (int chan = 0; chan < channel; chan++) {
+//                    double grey = (0.2126f * newImg.getRed(row, col) + 0.7152f * newImg.getGreen(row, col) + 0.0722f * newImg.getBlue(row, col));
+                    double grey = (0.299f * img.getRed(row, col) + 0.587f * img.getGreen(row, col) + 0.114f * img.getBlue(row, col));
 
                     newImg.setPixel(row, col, chan, grey);
                 }
