@@ -364,4 +364,34 @@ public class Image {
         frame.pack();
         frame.setVisible(true);
     }
+
+    public double getMaxValue() {
+        return getMaxValue(0);
+    }
+
+    public double getMaxValue(int channel) {
+        double max = 0;
+        for (int row = 0; row < this.height; row++) {
+            for (int col = 0; col < this.width; col++) {
+                if(this.arr[row][col][channel] > max) {
+                    max = this.arr[row][col][channel];
+                }
+            }
+        }
+        return max;
+    }
+
+    public void normalizeImage(double val) {
+        for (int row = 0; row < this.height; row++) {
+            for (int col = 0; col < this.width; col++) {
+                for (int chan = 0; chan < this.chan; chan++) {
+                    this.arr[row][col][chan] /= val;
+                }
+            }
+        }
+    }
+
+    public void normalizeImage() {
+        normalizeImage(255);
+    }
 }

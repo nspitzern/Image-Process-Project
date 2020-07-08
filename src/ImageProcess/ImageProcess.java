@@ -183,69 +183,78 @@ public class ImageProcess {
                     mag = Math.sqrt(mag);
 
                     double angle =  Math.atan2(gy.getPixel(row, col, 0), gx.getPixel(row, col, 0)) * 180 / Math.PI;
-                    if (angle < 0) {
-                        angle += 360;
-                    }
 
                     magnitudes.setPixel(row, col, 0, mag);
                     angles.setPixel(row, col, 0, angle);
             }
         }
 
-        Image edges = nonMaximumSuppression(magnitudes, angles);
+        nonMaximumSuppression(magnitudes, angles);
 
-        edges = applyThresholds(magnitudes, edges, highThreshold, lowThreshold);
+        Image edges = applyThresholds(magnitudes, highThreshold, lowThreshold);
+        edges.show();
 
         return edges;
     }
 
-    private Image nonMaximumSuppression(Image magnitudes, Image angles) {
-        Image newImg = magnitudes.copy();
-
-        for (int row = 1; row < newImg.getHeight() - 1; row++) {
-            for (int col = 1; col < newImg.getWidth() - 1; col++) {
+    private void nonMaximumSuppression(Image magnitudes, Image angles) {
+        for (int row = 1; row < magnitudes.getHeight() - 1; row++) {
+            for (int col = 1; col < magnitudes.getWidth() - 1; col++) {
                 double currentPixel = magnitudes.getPixel(row, col, 0);
 
-                if (angles.getPixel(row, col, 0) <= 22.5 || angles.getPixel(row, col, 0) > 157.5) { // 0 degrees
-                    if (magnitudes.getPixel(row, col - 1, 0) >= currentPixel || magnitudes.getPixel(row, col + 1, 0) >= currentPixel) {
-                        newImg.setPixel(row, col, 0 , 0);
+                if ((angles.getPixel(row, col, 0) <= 22.5 && angles.getPixel(row, col, 0) >= -22.5) ||
+                        (angles.getPixel(row, col, 0) < -157.5 && angles.getPixel(row, col, 0) >= -180)) { // 0 degrees
+                    if (magnitudes.getPixel(row, col - 1, 0) > currentPixel || magnitudes.getPixel(row, col + 1, 0) > currentPixel) {
+                        magnitudes.setPixel(row, col, 0 , 0);
                     }
-                } else if (angles.getPixel(row, col, 0) <= 67.5) { // 45 degrees
-                    if (magnitudes.getPixel(row + 1, col - 1, 0) >= currentPixel || magnitudes.getPixel(row - 1, col + 1, 0) >= currentPixel) {
-                        newImg.setPixel(row, col, 0 , 0);
+                } else if ((angles.getPixel(row, col, 0) >= 22.5 && angles.getPixel(row, col, 0) <= 67.5) ||
+                        (angles.getPixel(row, col, 0) >= -157.5 && angles.getPixel(row, col, 0) < -112.5)) { // 45 degrees
+                    if (magnitudes.getPixel(row - 1, col - 1, 0) > currentPixel || magnitudes.getPixel(row + 1, col + 1, 0) > currentPixel) {
+                        magnitudes.setPixel(row, col, 0 , 0);
                     }
-                } else if (angles.getPixel(row, col, 0) <= 112.5) { // 90 degrees
-                    if (magnitudes.getPixel(row - 1, col, 0) >= currentPixel || magnitudes.getPixel(row + 1, col, 0) >= currentPixel) {
-                        newImg.setPixel(row, col, 0 , 0);
+                } else if ((angles.getPixel(row, col, 0) >= 67.5 && angles.getPixel(row, col, 0) <= 112.5) ||
+                        (angles.getPixel(row, col, 0) < -67.5 && angles.getPixel(row, col, 0) >= -112.5)) { // 90 degrees
+                    if (magnitudes.getPixel(row - 1, col, 0) > currentPixel || magnitudes.getPixel(row + 1, col, 0) > currentPixel) {
+                        magnitudes.setPixel(row, col, 0 , 0);
                     }
-                } else if (angles.getPixel(row, col, 0) <= 157.5) { // 135 degrees
-                    if (magnitudes.getPixel(row - 1, col - 1, 0) >= currentPixel || newImg.getPixel(row + 1, col + 1, 0) >= currentPixel) {
-                        newImg.setPixel(row, col, 0 , 0);
+                } else if ((angles.getPixel(row, col, 0) >= 112.5 && angles.getPixel(row, col, 0) <= 157.5) ||
+                        (angles.getPixel(row, col, 0) < -22.5 && angles.getPixel(row, col, 0) >= -67.5)) { // 135 degrees
+                    if (magnitudes.getPixel(row + 1, col - 1, 0) > currentPixel || magnitudes.getPixel(row - 1, col + 1, 0) > currentPixel) {
+                        magnitudes.setPixel(row, col, 0 , 0);
                     }
                 }
             }
         }
-
-        return newImg;
     }
 
-    private Image applyThresholds(Image mags, Image edges, double highThreshold, double lowThreshold) {
-        for (int row = 0; row < mags.getHeight(); row++) {
-            for (int col = 0; col < mags.getWidth(); col++) {
-                double currentPixel = mags.getPixel(row, col, 0);
+    private Image applyThresholds(Image edges, double highThreshold, double lowThreshold) {
+        double max = edges.getMaxValue();
 
-                 if (currentPixel > highThreshold){
+        edges.normalizeImage(max);
+
+        max = edges.getMaxValue();
+
+        highThreshold = max * highThreshold;
+        lowThreshold = lowThreshold * highThreshold;
+
+        for (int row = 0; row < edges.getHeight(); row++) {
+            for (int col = 0; col < edges.getWidth(); col++) {
+                double currentPixel = edges.getPixel(row, col, 0);
+
+                if (currentPixel > highThreshold){
                     edges.setPixel(row, col, 0, 255);
                 }
                 // if current pixel gradient is lower than the low threshold - it is not an edge for sure
                 else if(currentPixel < lowThreshold) {
-                     edges.setPixel(row, col, 0, 0);
+                    edges.setPixel(row, col, 0, 0);
                 } else if (currentPixel < highThreshold && currentPixel > lowThreshold){
                     // if current pixel is between the thresholds - check if it is near an edge pixel.
                     // if yes - it is also an edge (localization). otherwise - it isn't.
 
-                    boolean isNeighbour = checkNeighbourPixels(mags, currentPixel, row, col, highThreshold);
-                    if (!isNeighbour) {
+                    boolean isNeighbour = checkNeighbourPixels(edges, row, col, highThreshold);
+                    if (isNeighbour) {
+                        edges.setPixel(row, col, 0, 255);
+                    } else {
                         edges.setPixel(row, col, 0, 0);
                     }
                 }
@@ -254,17 +263,19 @@ public class ImageProcess {
         return edges;
     }
 
-    private boolean checkNeighbourPixels(Image edges, double currentPixel, int currentRow, int currentCol, double high) {
+    private boolean checkNeighbourPixels(Image mags, int currentRow, int currentCol, double high) {
 
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {
 
                 // check if we exceed image boundaries
-                if (0 > currentRow + i || currentRow + i >= edges.getHeight() ||
-                        0 > currentCol + j || currentCol + j >= edges.getWidth()) {
-                    continue;
-                } else {
-                    if (edges.getPixel(currentRow + i, currentCol + j, 0) > high) {
+                if (0 <= currentRow + i && currentRow + i < mags.getHeight() &&
+                        0 <= currentCol + j && currentCol + j < mags.getWidth()) {
+                    if (i == 0 && j == 0) {
+                        continue;
+                    }
+
+                    if (mags.getPixel(currentRow + i, currentCol + j, 0) > high) {
                         return true;
                     }
                 }
