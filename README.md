@@ -14,6 +14,8 @@ img.show();
 ```
 
 <!--- add image of building here --->
+![building](https://user-images.githubusercontent.com/33936159/86952373-912c3680-c15b-11ea-89a4-b828b208268e.jpg)
+
 
 </br>
 
@@ -38,9 +40,9 @@ ImageProcess ip = new ImageProcess();
 Image newImg = ip.RGB2GreyScale(img);
 newImg.save("src/images/grey.jpg");
 ```
-
-</br>
 <!--- add grey image of building --->
+![grey](https://user-images.githubusercontent.com/33936159/86952496-c173d500-c15b-11ea-8696-cff08a84201b.jpg)
+
 
 # Algorithms
 ## Basic image manipulation
@@ -57,6 +59,7 @@ Image newImg = ip.flip90(img);
 ```
 
 <!--- add 90deg flip panda --->
+![flip90](https://user-images.githubusercontent.com/33936159/86952601-ea946580-c15b-11ea-8e41-0be75a842c8f.jpg)
 
 **180 degrees flip:**</br>
 Flips the image 180 degrees around a chosen axis (x/y).</br>
@@ -68,6 +71,7 @@ Image newImg = ip.flip180X(img);
 ```
 
 <!--- add 180degX flip panda --->
+![flip180X](https://user-images.githubusercontent.com/33936159/86952685-07309d80-c15c-11ea-89c9-4fdc775541a8.jpg)
 
 </br>
 
@@ -79,3 +83,4 @@ Image newImg = ip.flip180YBlue(img);
 ```
 
 <!--- add 180degYBlue flip panda --->
+![flip180YBlue](https://user-images.githubusercontent.com/33936159/86952691-0a2b8e00-c15c-11ea-9a06-b8a5d9ad8a29.jpg)
