@@ -18,8 +18,8 @@ public class Main {
 
         ImageProcess ip = new ImageProcess();
 
-        Image newImg = ip.RGB2GreyScale(img);
+        Image newImg = ip.swirl(img, 300, 500, 300, -0.3);
 
-        newImg.save("src/images/grey.jpg");
+        newImg.save("src/images/swirl.jpg");
     }
 }

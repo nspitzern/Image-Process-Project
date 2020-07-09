@@ -730,4 +730,50 @@ public class ImageProcess {
         }
     return  newImg;
     }
+
+    /*****
+     *
+     * @param img the original image
+     * @param swirlX the x position of the swirl center
+     * @param swirlY the y position of the swirl center
+     * @param swirlRadius the radius of the swirl
+     * @param swirlTwists number of twists. positive is counter clockwise, negative is clockwise).
+     *                    ! works best with numbers between 0 and 1.
+     * @return a twisted image
+     */
+    public Image swirl(Image img, double swirlX, double swirlY, double swirlRadius, double swirlTwists) {
+        Image newImg = img.copy();
+
+        for (int row = 0; row < img.getHeight(); row++) {
+            for (int col = 0; col < img.getWidth(); col++) {
+
+                // compute the distance and angle from the swirl center:
+                double pixelX = (double)col - swirlX;
+                double pixelY = (double)row - swirlY;
+
+                double pixelDistance = Math.sqrt((pixelX * pixelX) + (pixelY * pixelY));
+                double pixelAngle = Math.atan2(pixelY, pixelX);
+
+                // work out how much of a swirl to apply (1.0 in the center fading out to 0.0 at the radius):
+                double swirlAmount = 1.0 - (pixelDistance / swirlRadius);
+                if (swirlAmount > 0) {
+                    double twistAngle = swirlTwists * swirlAmount * 2 * Math.PI;
+
+                    // adjust the pixel angle and compute the adjusted pixel co-ordinates:
+                    pixelAngle += twistAngle;
+                    pixelX = Math.cos(pixelAngle) * pixelDistance;
+                    pixelY = Math.sin(pixelAngle) * pixelDistance;
+                }
+                if ((int)(swirlX + pixelX) >= img.getWidth() || (int)(swirlY + pixelY) >= img.getHeight()) {
+                    continue;
+                }
+
+                newImg.setRed(row, col, img.getRed((int)(swirlY + pixelY), (int)(swirlX + pixelX)));
+                newImg.setGreen(row, col, img.getGreen((int)(swirlY + pixelY), (int)(swirlX + pixelX)));
+                newImg.setBlue(row, col, img.getBlue((int)(swirlY + pixelY), (int)(swirlX + pixelX)));
+            }
+        }
+
+        return newImg;
+    }
 }
