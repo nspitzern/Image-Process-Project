@@ -18,8 +18,8 @@ public class Main {
 
         ImageProcess ip = new ImageProcess();
 
-        Image newImg = ip.swirl(img, 300, 500, 300, -0.3);
+        Image newImg = ip.squareFocus(img, 200, 300, 250, 400);
 
-        newImg.save("src/images/swirl.jpg");
+        newImg.save("src/images/focus.jpg");
     }
 }
