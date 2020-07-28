@@ -50,7 +50,7 @@ class ImageProcessMath {
         return newImg;
     }
 
-    static double bilinearInterpolation(Image img, double x, double y, int chan) {
+    static double[] bilinearInterpolation(Image img, double x, double y, int chans) {
         double lowX, lowY, highX, highY;
         // calculate 4 surrounding pixels in original image
         lowX = x;
@@ -58,41 +58,51 @@ class ImageProcessMath {
         highX = x + 1;
         highY = y + 1;
 
-        // prevent getting out of the image bound
-        if (highX >= img.getWidth() || highY >= img.getHeight()) {
-            return 0;
-        }
-
-        // calculate ratio of x points and y points
-        double d1, d2;
-        d1 = (x - lowX) / (highX - lowX);
-        d2 = (highX - x) / (highX - lowX);
-
         double q1, q2;
-        // interpolate low pixel
-        q1 = img.getPixel((int)lowY, (int)lowX, chan) * d2 + img.getPixel((int)lowY, (int)highX, chan) * d1;
-
-        // interpolate high pixel
-        q2 = img.getPixel((int)highY, (int)lowX, chan) * d2 + img.getPixel((int)highY, (int)highX, chan) * d1;
-
         double d3, d4;
-        d3 = (y - lowY) / (highY - lowY);
-        d4 = (highY - y) / (highY - lowY);
+        double[] q = new double[chans];
 
-        double q;
-        // interpolate middle pixel
-        q = q1 * d4 + q2 * d3;
+        for (int chan = 0; chan < chans; chan++) {
+            // prevent getting out of the image bound
+            if (highX >= img.getWidth() || highY >= img.getHeight()) {
+                q[chan] = 0;
+            } else {
+                // calculate ratio of x points and y points
+                double d1, d2;
+                d1 = (x - lowX) / (highX - lowX);
+                d2 = (highX - x) / (highX - lowX);
+
+                // interpolate low pixel
+                q1 = img.getPixel((int) lowY, (int) lowX, chan) * d2 + img.getPixel((int) lowY, (int) highX, chan) * d1;
+
+                // interpolate high pixel
+                q2 = img.getPixel((int) highY, (int) lowX, chan) * d2 + img.getPixel((int) highY, (int) highX, chan) * d1;
+
+                d3 = (y - lowY) / (highY - lowY);
+                d4 = (highY - y) / (highY - lowY);
+
+                // interpolate middle pixel
+                q[chan] = q1 * d4 + q2 * d3;
+            }
+        }
 
         return q;
     }
 
-    static double nearestNeighbourInterpolation(Image img, double x, double y, int chan) {
-        int curr_x = (int)Math.round(x), curr_y = (int)Math.round(y);
+    static double[] nearestNeighbourInterpolation(Image img, double x, double y, int chans) {
+        double[] pixVal = new double[chans];
 
-        if (curr_x >= img.getWidth() || curr_y >= img.getHeight()) {
-            return 0;
+        for (int chan = 0; chan < chans; chan++) {
+            int curr_x = (int)Math.round(x), curr_y = (int)Math.round(y);
+
+            if (curr_x >= img.getWidth() || curr_y >= img.getHeight()) {
+                pixVal[chan] = 0;
+            }
+
+            pixVal[chan] = img.getPixel(curr_y,  curr_x, chan);
         }
 
-        return img.getPixel(curr_y,  curr_x, chan);
+
+        return pixVal;
     }
 }

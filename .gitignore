@@ -6,3 +6,6 @@
 .idea
 out
 Image Process.iml
+
+# ignore web file
+web
