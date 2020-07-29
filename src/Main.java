@@ -9,9 +9,11 @@ public class Main {
 
             Image img = new Image(imgPath);
 
-            ImageProcess ip = new ImageProcess();
+            ImageProcess ip = new ImageProcess(img);
 
-            Image newImg = ip.cannyEdgeDetection(img, 0.7, 0.4);
+            ip.flip180XColor(2).blurImage(3, 3).sharpen();
+
+            Image newImg = ip.getImage();
 
             newImg.save(imgSavePath);
         } catch (Exception e) {
