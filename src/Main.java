@@ -11,7 +11,7 @@ public class Main {
 
             ImageProcess ip = new ImageProcess();
 
-            Image newImg = ip.nearestNeighbourResize(img, 100, 200);
+            Image newImg = ip.cannyEdgeDetection(img, 0.7, 0.4);
 
             newImg.save(imgSavePath);
         } catch (Exception e) {

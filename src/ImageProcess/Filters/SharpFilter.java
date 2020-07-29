@@ -1,6 +1,6 @@
 package ImageProcess.Filters;
 
-public class SharpFilter extends Filter2D implements Filter {
+public class SharpFilter extends BaseFilter2D {
 
     public SharpFilter() {
         super(3, 3);

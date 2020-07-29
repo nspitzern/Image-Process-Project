@@ -3,37 +3,15 @@ package ImageProcess;
 import ImageProcess.Filters.*;
 
 class EdgeDetection {
-    static Image edgeDetection(Image img, String type) {
-        Image newImg = null;
-        Image[] edges = null;
-        switch (type) {
-            case "sobel":
-                edges = sobelEdgeDetection(img);
-                newImg = edges[2];
-                break;
-            case "prewitt":
-                edges = prewittEdgeDetection(img);
-                newImg = edges[2];
-                break;
-            case "roberts":
-                edges = robertsEdgeDetection(img);
-                newImg = edges[2];
-                break;
-            default:
-                Filter f = new EdgeDetectionFilter();
-
-                newImg = ImageProcessMath.conv2D(img, f);
-                newImg.limitImageColors();
-                break;
-        }
-        return newImg;
+    public enum type{
+        PREWITT,
+        ROBERTS,
+        SOBEL
     }
 
-    private static Image[] sobelEdgeDetection(Image img) {
-        SobelFilter sobel = new SobelFilter();
-
-        Image gxImg = ImageProcessMath.conv2D(img, sobel.getGx());
-        Image gyImg = ImageProcessMath.conv2D(img, sobel.getGy());
+    static Image edgeDetection(Image img, EdgeDetectionFilter filter) {
+        Image gxImg = ImageProcessMath.conv2D(img, filter.getGx());
+        Image gyImg = ImageProcessMath.conv2D(img, filter.getGy());
         Image edges = img.copy();
 
         for (int row = 0; row < img.getHeight(); row++) {
@@ -47,47 +25,7 @@ class EdgeDetection {
                 edges.setBlue(row, col, Math.sqrt(blue));
             }
         }
-        return new Image[]{gxImg, gyImg, edges};
-    }
-
-    private static Image[] prewittEdgeDetection(Image img) {
-        PrewittFilter prewitt = new PrewittFilter();
-        Image gxImg = ImageProcessMath.conv2D(img, prewitt.getGx());
-        Image gyImg = ImageProcessMath.conv2D(img, prewitt.getGy());
-        Image edges = img.copy();
-
-        for (int row = 0; row < img.getHeight(); row++) {
-            for (int col = 0; col < img.getWidth(); col++) {
-                double red = Math.pow(gxImg.getRed(row, col), 2) + Math.pow(gyImg.getRed(row, col), 2);
-                double green = Math.pow(gxImg.getRed(row, col), 2) + Math.pow(gyImg.getRed(row, col), 2);
-                double blue = Math.pow(gxImg.getRed(row, col), 2) + Math.pow(gyImg.getRed(row, col), 2);
-
-                edges.setRed(row, col, Math.sqrt(red));
-                edges.setGreen(row, col, Math.sqrt(green));
-                edges.setBlue(row, col, Math.sqrt(blue));
-            }
-        }
-        return new Image[]{gxImg, gyImg, edges};
-    }
-
-    private static Image[] robertsEdgeDetection(Image img) {
-        RobertsFilter roberts = new RobertsFilter();
-        Image gxImg = ImageProcessMath.conv2D(img, roberts.getGx());
-        Image gyImg = ImageProcessMath.conv2D(img, roberts.getGy());
-        Image edges = img.copy();
-
-        for (int row = 0; row < img.getHeight(); row++) {
-            for (int col = 0; col < img.getWidth(); col++) {
-                double red = Math.pow(gxImg.getRed(row, col), 2) + Math.pow(gyImg.getRed(row, col), 2);
-                double green = Math.pow(gxImg.getRed(row, col), 2) + Math.pow(gyImg.getRed(row, col), 2);
-                double blue = Math.pow(gxImg.getRed(row, col), 2) + Math.pow(gyImg.getRed(row, col), 2);
-
-                edges.setRed(row, col, Math.sqrt(red));
-                edges.setGreen(row, col, Math.sqrt(green));
-                edges.setBlue(row, col, Math.sqrt(blue));
-            }
-        }
-        return new Image[]{gxImg, gyImg, edges};
+        return edges;
     }
 
     static Image cannyEdgeDetection(Image img, double highThreshold, double lowThreshold) {
@@ -95,11 +33,12 @@ class EdgeDetection {
 
         img = FilterBased.gaussianBlur(img, 3, 1.5);
 
-        Image[] sobel = sobelEdgeDetection(img);
-        Image gx = sobel[0];
-        Image gy = sobel[1];
+        EdgeDetectionFilter sobel = new SobelFilter();
+        Image gx = ImageProcessMath.conv2D(img, sobel.getGx());
+        Image gy = ImageProcessMath.conv2D(img, sobel.getGy());
 
-        Image magnitudes = new Image(img.getWidth(), img.getHeight(), 1), angles = new Image(img.getWidth(), img.getHeight(), 1);
+        Image magnitudes = new Image(img.getWidth(), img.getHeight(), 1);
+        Image angles = new Image(img.getWidth(), img.getHeight(), 1);
 
         // initialize magnitude and angles images
         for (int row = 0; row < img.getHeight(); row++) {

@@ -1,9 +1,16 @@
 package ImageProcess.Filters;
 
-public class GaussianFilter implements Filter {
-    private Filter2D f;
+public class GaussianFilter extends BaseFilter2D {
 
     public GaussianFilter(int size, double sigma) {
+        this(l1Norm(size, size, gaussianArray(size, sigma)));
+    }
+
+    private GaussianFilter(double[][] arr) {
+        super(arr);
+    }
+
+    private static double[][] gaussianArray(int size, double sigma) {
         size = (size % 2 == 0) ? size + 1 : size;
         // make the filter size odd
         size = size + 1;
@@ -21,12 +28,10 @@ public class GaussianFilter implements Filter {
             }
         }
 
-        arr = l1Norm(size, size, arr);
-
-        this.f = new Filter2D(arr);
+        return arr;
     }
 
-    private double[][] l1Norm(int width, int height, double[][] arr) {
+    private static double[][] l1Norm(int width, int height, double[][] arr) {
         int total = 0;
 
         for (int row = 0; row < height; row++) {
@@ -49,40 +54,5 @@ public class GaussianFilter implements Filter {
         }
 
         return arr;
-    }
-
-    @Override
-    public void multAllByValue(double v) {
-        this.f.multAllByValue(v);
-    }
-
-    @Override
-    public void addAllValue(double v) {
-        this.f.addAllValue(v);
-    }
-
-    @Override
-    public void multByValue(int row, int col, double v) {
-        this.f.multByValue(row, col, v);
-    }
-
-    @Override
-    public void addValue(int row, int col, double v) {
-        this.f.addValue(row, col, v);
-    }
-
-    @Override
-    public double getValue(int row, int col) {
-        return this.f.getValue(row, col);
-    }
-
-    @Override
-    public int getWidth() {
-        return this.f.getWidth();
-    }
-
-    @Override
-    public int getHeight() {
-        return this.f.getHeight();
     }
 }

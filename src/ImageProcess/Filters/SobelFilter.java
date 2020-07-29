@@ -1,121 +1,44 @@
 package ImageProcess.Filters;
 
-public class SobelFilter {
-    private Filter2D gx, gy;
+public class SobelFilter extends EdgeDetectionFilter{
 
     public SobelFilter() {
-        double[][] gxArr = {{-1, 0, 1}, {-2, 0, 2}, {-1, 0, 1}};
-        double[][] gyArr = {{-1, -2, -1}, {0, 0, 0}, {1, 2, 1}};
-        this.gx = new Filter2D(gxArr);
-        this.gy = new Filter2D(gyArr);
+        super(new double[][]{{-1, 0, 1}, {-2, 0, 2}, {-1, 0, 1}}, new double[][]{{-1, -2, -1}, {0, 0, 0}, {1, 2, 1}});
     }
 
-    public void multAllByValue(char dir, double v) {
-        try {
-            if (dir == 'x') {
-                this.gx.multAllByValue(v);
-            } else if (dir == 'y') {
-                this.gy.multAllByValue(v);
-            } else {
-                throw new Exception("Sobel Filter - Undefined direction");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void multAllByValue(EdgeDetectionFilter.direction dir, double v) {
+        super.multAllByValue(v, dir);
     }
 
-    public void addAllValue(char dir, double v) {
-        try {
-            if (dir == 'x') {
-                this.gx.addAllValue(v);
-            } else if (dir == 'y') {
-                this.gy.addAllValue(v);
-            } else {
-                throw new Exception("Sobel Filter - Undefined direction");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void addAllValue(EdgeDetectionFilter.direction dir, double v) {
+        super.addAllValue(v, dir);
     }
 
-    public void multByValue(char dir, int row, int col, double v) {
-        try {
-            if (dir == 'x') {
-                this.gx.multByValue(row, col, v);
-            } else if (dir == 'y') {
-                this.gy.multByValue(row ,col, v);
-            } else {
-                throw new Exception("Sobel Filter - Undefined direction");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void multByValue(EdgeDetectionFilter.direction dir, int row, int col, double v) {
+        super.multByValue(row, col, v, dir);
     }
 
-    public void addValue(char dir, int row, int col, double v) {
-        try {
-            if (dir == 'x') {
-                this.gx.addValue(row, col, v);
-            } else if (dir == 'y') {
-                this.gy.addValue(row, col, v);
-            } else {
-                throw new Exception("Sobel Filter - Undefined direction");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void addValue(EdgeDetectionFilter.direction dir, int row, int col, double v) {
+        super.addValue(row, col, v, dir);
     }
 
-    public double getValue(char dir, int row, int col) {
-        try {
-            if (dir == 'x') {
-                return this.gx.getValue(row, col);
-            } else if (dir == 'y') {
-                return this.gy.getValue(row, col);
-            } else {
-                throw new Exception("Sobel Filter - Undefined direction");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return -1;
+    public double getValue(EdgeDetectionFilter.direction dir, int row, int col) {
+        return super.getValue(row, col, dir);
     }
 
-    public int getWidth(char dir) {
-        try {
-            if (dir == 'x') {
-                return this.gx.getWidth();
-            } else if (dir == 'y') {
-                return this.gy.getWidth();
-            } else {
-                throw new Exception("Sobel Filter - Undefined direction");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return -1;
+    public int getWidth(EdgeDetectionFilter.direction dir) {
+        return super.getWidth(dir);
     }
 
-    public int getHeight(char dir) {
-        try {
-            if (dir == 'x') {
-                return this.gx.getHeight();
-            } else if (dir == 'y') {
-                return this.gy.getHeight();
-            } else {
-                throw new Exception("Sobel Filter - Undefined direction");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return -1;
+    public int getHeight(EdgeDetectionFilter.direction dir) {
+        return super.getHeight(dir);
     }
 
-    public Filter2D getGx() {
-        return this.gx;
+    public Filter getGx() {
+        return super.getGx();
     }
 
-    public Filter2D getGy() {
-        return this.gy;
+    public Filter getGy() {
+        return super.getGy();
     }
 }

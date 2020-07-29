@@ -128,12 +128,23 @@ public class Image {
         BufferedImage img = new BufferedImage(this.width, this.height, BufferedImage.TYPE_INT_RGB);
 
         try {
-            for (int row = 0; row < img.getHeight(); row++) {
-                for (int col = 0; col < img.getWidth(); col++) {
-                        Color c = new Color((int)this.arr[row][col][0], (int)this.arr[row][col][1], (int)this.arr[row][col][2]);
-                    img.setRGB(col, row, c.getRGB());
+            Color c = null;
+            if (this.chan == 1) {
+                for (int row = 0; row < img.getHeight(); row++) {
+                    for (int col = 0; col < img.getWidth(); col++) {
+                        c = new Color((int)this.arr[row][col][0], (int)this.arr[row][col][0], (int)this.arr[row][col][0]);
+                        img.setRGB(col, row, c.getRGB());
+                    }
+                }
+            } else {
+                for (int row = 0; row < img.getHeight(); row++) {
+                    for (int col = 0; col < img.getWidth(); col++) {
+                        c = new Color((int)this.arr[row][col][0], (int)this.arr[row][col][1], (int)this.arr[row][col][2]);
+                        img.setRGB(col, row, c.getRGB());
+                    }
                 }
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }

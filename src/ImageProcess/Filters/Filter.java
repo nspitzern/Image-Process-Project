@@ -1,7 +1,5 @@
 package ImageProcess.Filters;
 
-import ImageProcess.ImageProcess;
-
 public interface Filter {
     void multAllByValue(double v);
 
@@ -16,4 +14,6 @@ public interface Filter {
     int getWidth();
 
     int getHeight();
+
+    void initFilterOnes();
 }

@@ -1,5 +1,10 @@
 package ImageProcess;
 
+import ImageProcess.Filters.EdgeDetectionFilter;
+import ImageProcess.Filters.PrewittFilter;
+import ImageProcess.Filters.RobertsFilter;
+import ImageProcess.Filters.SobelFilter;
+
 public class ImageProcess {
 
     public Image negative(Image img) {
@@ -30,8 +35,22 @@ public class ImageProcess {
         return FilterBased.sharpen(img);
     }
 
-    public Image edgeDetection(Image img, String type) {
-        return EdgeDetection.edgeDetection(img, type);
+    public Image edgeDetection(Image img, EdgeDetection.type type) {
+        EdgeDetectionFilter filter;
+        switch (type) {
+            case PREWITT:
+                filter = new PrewittFilter();
+                break;
+            case ROBERTS:
+                filter = new RobertsFilter();
+                break;
+            case SOBEL:
+                filter = new SobelFilter();
+                break;
+            default:
+                return null;
+        }
+        return EdgeDetection.edgeDetection(img, filter);
     }
 
     public Image cannyEdgeDetection(Image img, double highThreshold, double lowThreshold) {

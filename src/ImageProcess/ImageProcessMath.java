@@ -1,9 +1,8 @@
 package ImageProcess;
 
 import ImageProcess.Filters.Filter;
-import ImageProcess.Filters.Filter2D;
 
-class ImageProcessMath {
+public class ImageProcessMath {
 
     static Image conv2D(Image img, Filter filter) {
         int imgWidth, imgHeight, filterWidth, filterHeight;

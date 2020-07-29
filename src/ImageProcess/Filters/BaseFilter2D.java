@@ -1,21 +1,22 @@
 package ImageProcess.Filters;
 
-public class Filter2D implements Filter {
+public abstract class BaseFilter2D implements Filter {
     private double[][] f;
     private int width, height;
 
-    public Filter2D(int width, int height) {
+    BaseFilter2D(int width, int height) {
         this.width = width;
         this.height = height;
         this.f = new double[height][width];
     }
 
-    public Filter2D(double[][] arr) {
+    BaseFilter2D(double[][] arr) {
         this.width = arr[0].length;
         this.height = arr.length;
         this.f = arr;
     }
 
+    @Override
     public void multAllByValue(double v) {
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
@@ -43,18 +44,22 @@ public class Filter2D implements Filter {
         this.f[row][col] += v;
     }
 
+    @Override
     public double getValue(int row, int col) {
         return this.f[row][col];
     }
 
+    @Override
     public int getWidth() {
         return this.width;
     }
 
+    @Override
     public int getHeight() {
         return this.height;
     }
 
+    @Override
     public void initFilterOnes() {
         for (int i = 0; i < this.height; i++) {
             for (int j = 0; j < this.width; j++) {
