@@ -5,8 +5,8 @@ public abstract class EdgeDetectionFilter {
         GX, GY
     }
 
-    private Filter gx;
-    private Filter gy;
+    private IFilter gx;
+    private IFilter gy;
 
     public EdgeDetectionFilter(double[][] gx, double[][] gy) {
         this.gx = new GeneralFilter(gx);
@@ -66,11 +66,11 @@ public abstract class EdgeDetectionFilter {
         }
     }
 
-    public Filter getGx() {
+    public IFilter getGx() {
         return this.gx;
     }
 
-    public Filter getGy() {
+    public IFilter getGy() {
         return this.gy;
     }
 }

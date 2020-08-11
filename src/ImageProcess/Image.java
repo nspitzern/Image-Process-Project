@@ -364,6 +364,7 @@ public class Image {
         frame.getContentPane().add(new JLabel(new ImageIcon(bi)));
         frame.pack();
         frame.setVisible(true);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
     public double getMaxValue() {

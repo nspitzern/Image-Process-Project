@@ -1,5 +1,6 @@
 import ImageProcess.ImageProcess;
 import ImageProcess.Image;
+import ImageProcess.FFT;
 
 public class Main {
     public static void main(String[] args) {
@@ -15,7 +16,7 @@ public class Main {
 
             Image newImg = ip.getImage();
 
-            newImg.save(imgSavePath);
+            newImg.show();
         } catch (Exception e) {
             e.printStackTrace();
         }

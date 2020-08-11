@@ -34,11 +34,11 @@ public class SobelFilter extends EdgeDetectionFilter{
         return super.getHeight(dir);
     }
 
-    public Filter getGx() {
+    public IFilter getGx() {
         return super.getGx();
     }
 
-    public Filter getGy() {
+    public IFilter getGy() {
         return super.getGy();
     }
 }
