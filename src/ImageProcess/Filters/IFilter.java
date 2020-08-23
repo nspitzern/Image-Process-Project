@@ -1,6 +1,6 @@
 package ImageProcess.Filters;
 
-public interface Filter {
+public interface IFilter {
     void multAllByValue(double v);
 
     void addAllValue(double v);

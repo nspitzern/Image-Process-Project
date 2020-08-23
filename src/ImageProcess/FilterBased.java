@@ -1,13 +1,13 @@
 package ImageProcess;
 
 import ImageProcess.Filters.BlurFilter;
-import ImageProcess.Filters.Filter;
+import ImageProcess.Filters.IFilter;
 import ImageProcess.Filters.GaussianFilter;
 import ImageProcess.Filters.SharpFilter;
 
 class FilterBased {
     static Image blurImage(Image img, int filterWidth, int filterHeight) {
-        Filter f = new BlurFilter(filterWidth, filterHeight);
+        IFilter f = new BlurFilter(filterWidth, filterHeight);
 
         return ImageProcessMath.conv2D(img, f);
     }
@@ -20,13 +20,13 @@ class FilterBased {
                 e.printStackTrace();
             }
         }
-        Filter f = new GaussianFilter(size, sigma);
+        IFilter f = new GaussianFilter(size, sigma);
 
         return ImageProcessMath.conv2D(img, f);
     }
 
     static Image sharpen(Image img) {
-        Filter f = new SharpFilter();
+        IFilter f = new SharpFilter();
 
         Image newImg = ImageProcessMath.conv2D(img, f);
         newImg.limitImageColors();

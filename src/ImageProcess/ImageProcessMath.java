@@ -1,10 +1,10 @@
 package ImageProcess;
 
-import ImageProcess.Filters.Filter;
+import ImageProcess.Filters.IFilter;
 
 public class ImageProcessMath {
 
-    static Image conv2D(Image img, Filter filter) {
+    static Image conv2D(Image img, IFilter filter) {
         int imgWidth, imgHeight, filterWidth, filterHeight;
         imgWidth = img.getWidth();
         imgHeight = img.getHeight();

@@ -1,6 +1,6 @@
 package ImageProcess.Filters;
 
-public abstract class BaseFilter2D implements Filter {
+public abstract class BaseFilter2D implements IFilter {
     private double[][] f;
     private int width, height;
 

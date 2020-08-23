@@ -68,6 +68,9 @@ public class FFT {
     }
 
     public Image getImage() {
+
+        inverse();
+
         int width = this.img.getWidth(), height = this.img.getHeight();
 
         Image newImg = new Image(width, height, 3);
